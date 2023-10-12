@@ -1,0 +1,534 @@
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "appointments"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "appointments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "patient_name" varchar, "appointment_time" datetime(6), "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_appointments_on_doctor_id" ON "appointments" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "availabilities"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "availabilities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "start_time" datetime(6), "end_time" datetime(6), "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_availabilities_on_doctor_id" ON "availabilities" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "doctors"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "doctors" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "specialty" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "working_hours" json)[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aappointments" ("id" integer NOT NULL PRIMARY KEY, "patient_name" varchar DEFAULT NULL, "appointment_time" datetime(6) DEFAULT NULL, "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aappointments_on_doctor_id" ON "aappointments" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aappointments" ("id","patient_name","appointment_time","doctor_id","created_at","updated_at")
+                     SELECT "id","patient_name","appointment_time","doctor_id","created_at","updated_at" FROM "appointments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "appointments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "appointments" ("id" integer NOT NULL PRIMARY KEY, "patient_name" varchar DEFAULT NULL, "appointment_time" datetime(6) DEFAULT NULL, "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8db8e1e8a5"
+FOREIGN KEY ("doctor_id")
+  REFERENCES "doctors" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_appointments_on_doctor_id" ON "appointments" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "appointments" ("id","patient_name","appointment_time","doctor_id","created_at","updated_at")
+                     SELECT "id","patient_name","appointment_time","doctor_id","created_at","updated_at" FROM "aappointments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aappointments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aavailabilities" ("id" integer NOT NULL PRIMARY KEY, "start_time" datetime(6) DEFAULT NULL, "end_time" datetime(6) DEFAULT NULL, "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aavailabilities_on_doctor_id" ON "aavailabilities" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aavailabilities" ("id","start_time","end_time","doctor_id","created_at","updated_at")
+                     SELECT "id","start_time","end_time","doctor_id","created_at","updated_at" FROM "availabilities"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "availabilities"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "availabilities" ("id" integer NOT NULL PRIMARY KEY, "start_time" datetime(6) DEFAULT NULL, "end_time" datetime(6) DEFAULT NULL, "doctor_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_b9830dab2f"
+FOREIGN KEY ("doctor_id")
+  REFERENCES "doctors" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_availabilities_on_doctor_id" ON "availabilities" ("doctor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "availabilities" ("id","start_time","end_time","doctor_id","created_at","updated_at")
+                     SELECT "id","start_time","end_time","doctor_id","created_at","updated_at" FROM "aavailabilities"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aavailabilities"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20231011111947)[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20231011084845),
+(20231011084849),
+(20231011094050);
+
+[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2023-10-12 13:08:59.318706"], ["updated_at", "2023-10-12 13:08:59.318706"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "schema_sha1"], ["value", "43fa63354d31c7e904388fe1f598cb6c9bac1ba7"], ["created_at", "2023-10-12 13:08:59.319936"], ["updated_at", "2023-10-12 13:08:59.319936"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.8ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:18:36.428422"], ["updated_at", "2023-10-12 13:18:36.428422"], ["working_hours", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.1ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:18:36.429790"], ["updated_at", "2023-10-12 13:18:36.429790"], ["working_hours", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.49ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2400)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.5ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:20:24.869739"], ["updated_at", "2023-10-12 13:20:24.869739"], ["working_hours", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:20:24.870926"], ["updated_at", "2023-10-12 13:20:24.870926"], ["working_hours", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.5ms)
+Completed 200 OK in 3ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2400)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:20:24.886014"], ["updated_at", "2023-10-12 13:20:24.886014"], ["working_hours", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.5ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:21:06.427430"], ["updated_at", "2023-10-12 13:21:06.427430"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:21:06.428624"], ["updated_at", "2023-10-12 13:21:06.428624"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.37ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:21:06.444441"], ["updated_at", "2023-10-12 13:21:06.444441"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.4ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:23:09.931530"], ["updated_at", "2023-10-12 13:23:09.931530"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:23:09.932694"], ["updated_at", "2023-10-12 13:23:09.932694"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.42ms)
+Completed 200 OK in 3ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:23:09.947850"], ["updated_at", "2023-10-12 13:23:09.947850"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAvailability Create (0.1ms)[0m  [1m[32mINSERT INTO "availabilities" ("start_time", "end_time", "doctor_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["start_time", "2023-10-12 09:00:00"], ["end_time", "2023-10-12 17:00:00"], ["doctor_id", 1], ["created_at", "2023-10-12 13:23:09.954067"], ["updated_at", "2023-10-12 13:23:09.954067"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.5ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:24:33.827544"], ["updated_at", "2023-10-12 13:24:33.827544"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:24:33.828742"], ["updated_at", "2023-10-12 13:24:33.828742"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.36ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:24:33.843674"], ["updated_at", "2023-10-12 13:24:33.843674"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAvailability Create (0.1ms)[0m  [1m[32mINSERT INTO "availabilities" ("start_time", "end_time", "doctor_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["start_time", "2023-10-12 09:00:00"], ["end_time", "2023-10-12 17:00:00"], ["doctor_id", 1], ["created_at", "2023-10-12 13:24:33.848870"], ["updated_at", "2023-10-12 13:24:33.848870"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.5ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:25:47.800385"], ["updated_at", "2023-10-12 13:25:47.800385"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:25:47.801566"], ["updated_at", "2023-10-12 13:25:47.801566"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.4ms)
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:25:47.816456"], ["updated_at", "2023-10-12 13:25:47.816456"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAvailability Create (0.1ms)[0m  [1m[32mINSERT INTO "availabilities" ("start_time", "end_time", "doctor_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["start_time", "2023-10-12 13:25:47.820249"], ["end_time", "2023-10-12 14:25:47.820256"], ["doctor_id", 1], ["created_at", "2023-10-12 13:25:47.821763"], ["updated_at", "2023-10-12 13:25:47.821763"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (2.5ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:27:34.928018"], ["updated_at", "2023-10-12 13:27:34.928018"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:27:34.931312"], ["updated_at", "2023-10-12 13:27:34.931312"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.4ms)
+Completed 200 OK in 3ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2431)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:27:41.109926"], ["updated_at", "2023-10-12 13:27:41.109926"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:27:41.111590"], ["updated_at", "2023-10-12 13:27:41.111590"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.42ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (1.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:05.629190"], ["updated_at", "2023-10-12 13:28:05.629190"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:28:05.631189"], ["updated_at", "2023-10-12 13:28:05.631189"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.47ms)
+Completed 200 OK in 3ms (Views: 1.2ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.8ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:16.917464"], ["updated_at", "2023-10-12 13:28:16.917464"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:28:16.919130"], ["updated_at", "2023-10-12 13:28:16.919130"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.39ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:47.380838"], ["updated_at", "2023-10-12 13:28:47.380838"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:28:47.382456"], ["updated_at", "2023-10-12 13:28:47.382456"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.1ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.54ms)
+Completed 200 OK in 3ms (Views: 1.3ms | ActiveRecord: 0.1ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:47.397502"], ["updated_at", "2023-10-12 13:28:47.397502"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAvailability Create (0.1ms)[0m  [1m[32mINSERT INTO "availabilities" ("start_time", "end_time", "doctor_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["start_time", "2023-10-12 13:28:47.401351"], ["end_time", "2023-10-12 14:28:47.401359"], ["doctor_id", 1], ["created_at", "2023-10-12 13:28:47.402822"], ["updated_at", "2023-10-12 13:28:47.402822"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:55.638390"], ["updated_at", "2023-10-12 13:28:55.638390"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:28:55.639339"], ["updated_at", "2023-10-12 13:28:55.639339"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.44ms)
+Completed 200 OK in 3ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:28:55.654537"], ["updated_at", "2023-10-12 13:28:55.654537"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:29:10.909066"], ["updated_at", "2023-10-12 13:29:10.909066"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:29:10.910732"], ["updated_at", "2023-10-12 13:29:10.910732"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.4ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2429)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.1ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:29:10.924969"], ["updated_at", "2023-10-12 13:29:10.924969"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:29:17.674994"], ["updated_at", "2023-10-12 13:29:17.674994"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:29:17.676583"], ["updated_at", "2023-10-12 13:29:17.676583"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.42ms)
+Completed 200 OK in 3ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2429)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:29:17.690952"], ["updated_at", "2023-10-12 13:29:17.690952"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.8ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:35:45.773294"], ["updated_at", "2023-10-12 13:35:45.773294"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:35:45.774853"], ["updated_at", "2023-10-12 13:35:45.774853"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.2ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (1.08ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.2ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (1.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:36:47.981116"], ["updated_at", "2023-10-12 13:36:47.981116"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:36:47.982822"], ["updated_at", "2023-10-12 13:36:47.982822"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.4ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:38:06.442679"], ["updated_at", "2023-10-12 13:38:06.442679"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:38:06.444376"], ["updated_at", "2023-10-12 13:38:06.444376"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.41ms)
+Completed 200 OK in 3ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:38:24.978032"], ["updated_at", "2023-10-12 13:38:24.978032"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:38:24.979664"], ["updated_at", "2023-10-12 13:38:24.979664"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.54ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.8ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:38:49.788742"], ["updated_at", "2023-10-12 13:38:49.788742"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:38:49.790337"], ["updated_at", "2023-10-12 13:38:49.790337"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.39ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Smith"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:38:49.804407"], ["updated_at", "2023-10-12 13:38:49.804407"], ["working_hours", "\"9 AM - 5 PM\""]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:39:46.072204"], ["updated_at", "2023-10-12 13:39:46.072204"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:39:46.073899"], ["updated_at", "2023-10-12 13:39:46.073899"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.44ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.1ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Smith"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:39:46.088610"], ["updated_at", "2023-10-12 13:39:46.088610"], ["working_hours", "\"9 AM - 5 PM\""]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:17.764319"], ["updated_at", "2023-10-12 13:40:17.764319"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:40:17.765951"], ["updated_at", "2023-10-12 13:40:17.765951"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.41ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2430)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.1ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Smith"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:17.780585"], ["updated_at", "2023-10-12 13:40:17.780585"], ["working_hours", "\"9 AM - 5 PM\""]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:27.189584"], ["updated_at", "2023-10-12 13:40:27.189584"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:40:27.191199"], ["updated_at", "2023-10-12 13:40:27.191199"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.0ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.38ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 2433)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.2ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Smith"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:27.205312"], ["updated_at", "2023-10-12 13:40:27.205312"], ["working_hours", "\"9 AM - 5 PM\""]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.9ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. John Doe"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:44.263432"], ["updated_at", "2023-10-12 13:40:44.263432"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.0ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Jane Smith"], ["specialty", "Pediatrics"], ["created_at", "2023-10-12 13:40:44.265058"], ["updated_at", "2023-10-12 13:40:44.265058"], ["working_hours", "{\"start\":\"9:00 AM\",\"end\":\"5:00 PM\"}"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Processing by DoctorsController#index as HTML
+[active_model_serializers]   [1m[36mDoctor Load (0.1ms)[0m  [1m[34mSELECT "doctors".* FROM "doctors"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.39ms)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.1ms | Allocations: 2429)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mDoctor Create (0.1ms)[0m  [1m[32mINSERT INTO "doctors" ("name", "specialty", "created_at", "updated_at", "working_hours") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Dr. Smith"], ["specialty", "Cardiology"], ["created_at", "2023-10-12 13:40:44.279529"], ["updated_at", "2023-10-12 13:40:44.279529"], ["working_hours", "\"9 AM - 5 PM\""]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m

@@ -1,0 +1,15 @@
+en:
+  doctor:
+    list: "All doctors list."
+    created : "Doctor created  successfully!"
+    appointment_booked: "Appointment booked successfully!"
+    not_found: "Doctor, already has an appointment at this time"
+    invalid_time: "Invalid appointment time format'"
+  appointment:
+    created: "Appointment is created Successfully!"
+    update: "Appointment updated Successfully!"
+    deleted: "Appointment deleted Successfully!"
+    not_found: "Doctor not found"
+    update_error: "Appointment is already book for this time please refer other time!"
+  success_messages:
+  appointment_created: "Appointment created successfully."
